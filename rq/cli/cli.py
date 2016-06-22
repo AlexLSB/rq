@@ -198,7 +198,8 @@ def worker(url, config, burst, name, worker_class, job_class, queue_class, path,
         if sentry_dsn:
             from raven import Client
             from rq.contrib.sentry import register_sentry
-            client = Client(sentry_dsn)
+            from raven.transport.http import HTTPTransport
+            client = Client(sentry_dsn, transport=HTTPTransport)
             register_sentry(client, w)
 
         w.work(burst=burst)
